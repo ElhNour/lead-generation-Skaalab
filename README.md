@@ -2,7 +2,7 @@
 final system designed for Skaalab startup (lead generation &amp; BI).
 
 SERVER SIDE :
-0- go to server-side folder.
+0- go to server-side folder.\n
 1- run npm install -g  to get all dependencies.
 2- run nodemon server.js to launch the server.
 
