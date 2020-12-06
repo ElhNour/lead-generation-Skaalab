@@ -12,7 +12,7 @@ const fetchOffers = (filtre = {
     return (dispatch) => {
      
         dispatch(requestOffers())
-        Axios.get('/api/:startupname/offers?remote=' + filtre.travail + '&source=' + filtre.source + '&contrat=' + filtre.contrat + '&tech=' + filtre.technologie)
+        Axios.get('http://localhost:3003/api/:startupname/offers?remote=' + filtre.travail + '&source=' + filtre.source + '&contrat=' + filtre.contrat + '&tech=' + filtre.technologie)
             .then(
             res => {
                 console.log(res)

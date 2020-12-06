@@ -1,43 +1,33 @@
 import Axios from 'axios'
 import React, { Component } from 'react'
+import fetchAllOffers from './actions creators/offres/fetch'
 import { withRouter } from 'react-router'
 import './offres.css'
+import { useEffect } from 'react'
 
-class OFFRE extends Component {
-   constructor(props) {
-      super(props)
-      this.state = {
-         Offers: [
-         ],
-         loading: true,
-         size:0,
-       
+const OFFRE = ({
+   offers = [],
+   loading = false,
+   fetchAllOffers = f => f
+}) => {
+   useEffect(()=>{
+    
+      fetchAllOffers()
+     
+   },fetchAllOffers)
+   const renderTableHeader = () => {
+      if (offers.length) {
+         let header = Object.keys(offers[0])
+         return header.map((key, index) => {
+            return <th key={index}>{key.toUpperCase()}</th>
+         })
       }
-      
-   }
-
-   componentDidMount() {
-      var name = this.props.match.params.name;
-      Axios.get('http://localhost:3003/api/offres/'+name).then(res => {
-
-         console.log("res", res.data)
-         this.setState({ Offers: res.data, loading: false });
-         this.setState({ size:this.state.Offers.length  });
-
-      });
 
    }
 
-
-   renderTableHeader() {
-
-      let header = Object.keys(this.state.Offers[0])
-      return header.map((key, index) => {
-         return <th key={index}>{key.toUpperCase()}</th>
-      })
-   }
-   renderTableData() {
-      return this.state.Offers.map((offer, index) => {
+  
+   const renderTableData = () => {
+      return offers.map((offer, index) => {
          const { poste, salaire, travail, skills, description, contrat, diplome, experience } = offer;
          return (
             <tr >
@@ -59,20 +49,20 @@ class OFFRE extends Component {
       })
    }
 
-   render() {
+
       return (
          <div >
-            {this.state.loading ?
+            {loading ?
                'loading...'
 
                :
                <>
-                  <h1 id='title'>Offers List Table //{this.state.size}//</h1>
+                  <h1 id='title'>Offers List Table</h1>
                   <table id='offers'>
                      <tbody>
 
-                        <tr>{this.renderTableHeader()}</tr>
-                        {this.renderTableData()}
+                        <tr>{renderTableHeader()}</tr>
+                        {renderTableData()}
                      </tbody>
                   </table>
                </ >
@@ -81,5 +71,5 @@ class OFFRE extends Component {
       )
    }
 
-}
+
 export default withRouter(OFFRE)

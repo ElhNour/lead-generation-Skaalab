@@ -9,6 +9,7 @@ const Table = ({
    fetchAllStartups = f => f
 }) => {
    useEffect(()=>{
+    
       fetchAllStartups()
    },fetchAllStartups)
    const renderTableHeader = () => {
