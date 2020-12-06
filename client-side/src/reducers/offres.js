@@ -2,18 +2,7 @@ import c from '../actions/constants'
 
 const offers = (state = {
     loading: false,
-    offers: [
-        {
-            poste:'',
-            salaire:'',
-            travail:'',
-            skills:'',
-            description:'',
-            contrat:'',
-            diplome:'',
-            experience:'',
-        }
-    ]
+    offers: []
 }, action) => {
     switch (action.type) {
         case c.REQUEST_OFFERS:

@@ -4,16 +4,22 @@ import App from './App.js';
 import Startup from './containers/Startup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import OFFRE from './table-offres.js';
+import OFFRE from './containers/Offre';
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import startups from './reducers/startups.js';
+import offers from './reducers/offres.js';
 import {Provider} from 'react-redux'
 import reduxThunk from 'redux-thunk'
 
-const store = createStore(combineReducers({startups}),applyMiddleware(reduxThunk));
+const store = createStore(combineReducers({startups,offers}),applyMiddleware(reduxThunk));
 store.dispatch({
   type:'SET_STARTUPS',
   startups:[
+  ]
+})
+store.dispatch({
+  type:'SET_OFFERS',
+  offers:[
   ]
 })
 console.log(store.getState())

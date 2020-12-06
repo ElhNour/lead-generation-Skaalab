@@ -3,16 +3,15 @@ import receiveOffers from './receiveOffers'
 import setOffers from './setOffers'
 import Axios from 'axios'
 
-const fetchAllOffers = () => {
+const fetchAllOffers = (startupname) => {
 
     return (dispatch) => {
         
         dispatch(requestOffers())
        
-        Axios.get('http://localhost:3003/api/:startupname/all').then(
+        Axios.get('http://localhost:3003/api/'+startupname+'/all').then(
             res => {
-               
-
+            
                 dispatch(setOffers(res.data))
             }
         ).then(dispatch(receiveOffers()))

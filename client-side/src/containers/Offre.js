@@ -2,22 +2,19 @@ import { connect } from "react-redux"
 import Off from "../table-offres.js"
 
 const { default: fetchAllOffers } = require("../actions creators/offres/fetch")
+const { default: fetchOffers } = require("../actions creators/offres/fetchOffers")
 
 const mapStateToProps = state => ({
-    poste:state.offres.poste,
-    salaire:state.offres.salaire,
-    travail:state.offres.travail,
-    skills:state.offres.skills,
-    description:state.offres.description,
-    contrat:state.offres.contrat,
-    diplome:state.offres.diplome,
-    experience:state.offres.experience,
-
+loading:state.offers.loading,
+offers: state.offers.offers
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchAllOffers: () => {
-        dispatch(fetchAllOffers())
+    fetchAllOffers: (startupname) => {
+        dispatch(fetchAllOffers(startupname))
+    },
+    fetchOffers:(startupname,filtre) =>{
+        dispatch(fetchOffers(startupname,filtre))
     }
 })
 

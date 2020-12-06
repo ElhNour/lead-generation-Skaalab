@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.get("/api/all", (req, res) => {
   
    db.query(
-      'select name,website from startup',
+      'select name,website from startupi',
       function (err, result) {
          if (err) {
             console.log("error", err)
@@ -38,11 +38,14 @@ app.get("/api/all", (req, res) => {
    )
 })
 app.get("/api/startups", (req, res) => {
-   var remote=req.query.remote;
-   var source=req.query.source;
-   var contrat=req.query.contrat;
-   var tech=req.query.tech;
-   var q="select name,website from startup where idstartup in (select startupID from offre where contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')) and sourceID="+source;
+   var remote=''
+   if (req.query.remote!=null) remote=req.query.remote
+   var contrat=''
+   if (req.query.contrat!=null) contrat=req.query.contrat
+   var tech=''
+   if (req.query.tech!=null) tech=req.query.tech
+   source=req.query.source
+   var q="select name,website from startupi where idstartup in (select startupID from offre where contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')) and sourceID="+source;
    db.query(
       q,
       function (err, result) {
@@ -60,7 +63,7 @@ app.get("/api/startups", (req, res) => {
 //Alloffers/:
 app.get("/api/:startupname/all", (req, res) => {
    db.query(
-      "SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startup where name=?)", req.params.startupname, function (err, answer) {
+      "SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name=?)", req.params.startupname, function (err, answer) {
          if (err) {
             console.log("error", err);
 
@@ -81,8 +84,23 @@ app.get("/api/:startupname/offers", (req, res) => {
    if (req.query.contrat!=null) contrat=req.query.contrat
    var tech=''
    if (req.query.tech!=null) tech=req.query.tech
-   var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startup where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
-   db.query(
+   if (remote!=''){
+      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and (travail like '%"+remote+"%' or travail like '%Télétravail%') and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
+      db.query(
+         q, function (err, answer) {
+            if (err) {
+               console.log("error", err);
+   
+            } else {
+               res.json(answer);
+               console.log(answer)
+   
+            }
+         }
+      );
+   }else {
+      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
+      db.query(
       q, function (err, answer) {
          if (err) {
             console.log("error", err);
@@ -94,6 +112,8 @@ app.get("/api/:startupname/offers", (req, res) => {
          }
       }
    );
+   }
+   
 
 });
 

@@ -1,20 +1,21 @@
-import Axios from 'axios'
 import React, { Component } from 'react'
-import fetchAllOffers from './actions creators/offres/fetch'
 import { withRouter } from 'react-router'
 import './offres.css'
 import { useEffect } from 'react'
 
 const OFFRE = ({
    offers = [],
+   match,
    loading = false,
-   fetchAllOffers = f => f
+   fetchAllOffers = f => f,
+   fetchOffers = f=>f
 }) => {
    useEffect(()=>{
-    
-      fetchAllOffers()
+         if(match.state && match.state.fromStartups){
+        fetchOffers(match.params.name,match.state.filtre)
+      }else fetchAllOffers(match.params.name)
      
-   },fetchAllOffers)
+   },[match],fetchAllOffers)
    const renderTableHeader = () => {
       if (offers.length) {
          let header = Object.keys(offers[0])

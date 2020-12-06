@@ -1,5 +1,4 @@
 import React from 'react';
-import NavForm from './containers/NavForm';
 
 
 const App = ({
@@ -9,7 +8,6 @@ const App = ({
 
   return (
     <div>
-      <NavForm></NavForm>
       <p>    </p>
       {children}
     </div>
