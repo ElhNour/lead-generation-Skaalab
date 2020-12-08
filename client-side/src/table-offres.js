@@ -60,7 +60,7 @@ const OFFRE = ({
 
                :
                <>
-                  <h1 id='title'>Offers List Table //{offers.length}//</h1>
+                  <h1 id='title'>Offers List Table : {offers.length} - offres</h1>
                   <table id='offers'>
                      <tbody>
 

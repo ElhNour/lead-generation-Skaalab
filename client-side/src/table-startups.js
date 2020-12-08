@@ -79,7 +79,7 @@ const Table = ({
                      state:{fromStartups:true,
                      filtre:filtre}
                   }}>
-                     {name}
+                     {name} 
                   </Link>
                </td>
 
@@ -149,7 +149,7 @@ Remote
          :
          <>
             <p></p>
-            { <h1 id='title'>Start-ups List Table //{startups.length}//</h1>}
+            { <h1 id='title'>Start-ups List Table : {startups.length} - startup</h1>}
             <table id='offers'>
                <tbody>
 
