@@ -6,16 +6,18 @@ import { useEffect } from 'react'
 const OFFRE = ({
    offers = [],
    match,
+   location,
    loading = false,
    fetchAllOffers = f => f,
    fetchOffers = f=>f
 }) => {
    useEffect(()=>{
-         if(match.state && match.state.fromStartups){
-        fetchOffers(match.params.name,match.state.filtre)
+         if(location.state && location.state.fromStartups){
+        fetchOffers(match.params.name,location.state.filtre)
       }else fetchAllOffers(match.params.name)
      
    },[match],fetchAllOffers)
+
    const renderTableHeader = () => {
       if (offers.length) {
          let header = Object.keys(offers[0])
@@ -29,7 +31,7 @@ const OFFRE = ({
   
    const renderTableData = () => {
       return offers.map((offer, index) => {
-         const { poste, salaire, travail, skills, description, contrat, diplome, experience } = offer;
+         const { poste, contrat, salaire,  travail, diplome, experience,skills, description } = offer;
          return (
             <tr >
 
@@ -58,7 +60,7 @@ const OFFRE = ({
 
                :
                <>
-                  <h1 id='title'>Offers List Table</h1>
+                  <h1 id='title'>Offers List Table //{offers.length}//</h1>
                   <table id='offers'>
                      <tbody>
 

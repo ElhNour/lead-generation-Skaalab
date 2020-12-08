@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.get("/api/all", (req, res) => {
   
    db.query(
-      'select name,website from startupi',
+      'select name,website from startup',
       function (err, result) {
          if (err) {
             console.log("error", err)
@@ -45,7 +45,8 @@ app.get("/api/startups", (req, res) => {
    var tech=''
    if (req.query.tech!=null) tech=req.query.tech
    source=req.query.source
-   var q="select name,website from startupi where idstartup in (select startupID from offre where contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')) and sourceID="+source;
+   if (remote!=''){
+     var q="select name,website from startup where idstartup in (select startupID from offre where contrat like '%"+contrat+"%' and (travail like '%"+remote+"%' or travail like '%Télétravail%') and (description like '%"+tech+"%' or skills like '%"+tech+"%')) and sourceID="+source;
    db.query(
       q,
       function (err, result) {
@@ -56,14 +57,31 @@ app.get("/api/startups", (req, res) => {
             res.json(result);
          }
       }
-   )
+   ) 
+   }else {
+      var q="select name,website from startup where idstartup in (select startupID from offre where contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')) and sourceID="+source;
+   db.query(
+      q,
+      function (err, result) {
+         if (err) {
+            console.log("error", err)
+         } else {
+            console.log('startups ', result)
+            res.json(result);
+         }
+      }
+   ) 
+   }
+   
 
 })
 
 //Alloffers/:
 app.get("/api/:startupname/all", (req, res) => {
+
+   var query="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startup where name='"+req.params.startupname+"' and sourceID="+req.query.source;
    db.query(
-      "SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name=?)", req.params.startupname, function (err, answer) {
+      query, function (err, answer) {
          if (err) {
             console.log("error", err);
 
@@ -85,7 +103,7 @@ app.get("/api/:startupname/offers", (req, res) => {
    var tech=''
    if (req.query.tech!=null) tech=req.query.tech
    if (remote!=''){
-      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and (travail like '%"+remote+"%' or travail like '%Télétravail%') and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
+      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startup where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and (travail like '%"+remote+"%' or travail like '%Télétravail%') and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
       db.query(
          q, function (err, answer) {
             if (err) {
@@ -99,7 +117,7 @@ app.get("/api/:startupname/offers", (req, res) => {
          }
       );
    }else {
-      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startupi where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
+      var q="SELECT poste, salaire, travail, skills, contrat, diplome, experience, description FROM offre where startupID in (select idstartup from startup where name='"+req.params.startupname+"') and contrat like '%"+contrat+"%' and travail like '%"+remote+"%' and (description like '%"+tech+"%' or skills like '%"+tech+"%')";
       db.query(
       q, function (err, answer) {
          if (err) {

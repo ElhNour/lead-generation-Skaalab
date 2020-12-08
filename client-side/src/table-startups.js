@@ -148,7 +148,8 @@ Remote
          'loading...'
          :
          <>
-            {/* <h1 id='title'>Start-ups List Table //{state.size}//</h1> */}
+            <p></p>
+            { <h1 id='title'>Start-ups List Table //{startups.length}//</h1>}
             <table id='offers'>
                <tbody>
 
